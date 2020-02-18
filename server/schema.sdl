@@ -1,0 +1,16 @@
+type User {
+id: ID!
+name: String @fake(type:fullName)
+email: String @fake(type:email)
+status: String @examples(values: ["Active", "Inactive"])
+}
+
+type Query {
+allUsers: [User!]! @listLength(min: 2, max: 1)
+getUser(id: String!): User!
+}
+
+type Mutation {
+addUser(name: String!, email: String!, status: String!): User!
+removeUser(id: String!): Boolean
+}

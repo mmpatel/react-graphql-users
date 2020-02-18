@@ -1,0 +1,25 @@
+version: '3.3'
+
+services:
+  server:
+    container_name: server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - '9002:9002'
+  react-app:
+    container_name: react-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - server
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_GRAPHQL_URL=http://localhost:9002/graphql
