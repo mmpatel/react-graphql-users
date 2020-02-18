@@ -1,68 +1,69 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React Test Task
 
-## Available Scripts
+## Introduction
+This simple UI is for showing a User list and adding users using graphql-faker.
 
-In the project directory, you can run:
 
-### `yarn start`
+## Installing and Running the app
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Steps to clone the repository
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```
+git clone git@github.com:mmpatel/react-graphql-users.git
+cd react-graphql-users
 
-### `yarn test`
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Steps to install packages
+In the project directory's terminal run below command to install all the required packages
+```
+yarn
+```
+### Step to setup env variables
 
-### `yarn build`
+```
+Create a .env file in the project directory. In this file copy over the contents as is from the .env.example file to have the necessary environment variables set
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Steps to start graphql-faker
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* To install the graphql-faker app
+    ```
+    npm install -g graphql-faker
+    ```
+* To run the application
+    ```
+    graphql-faker --open
+    ```
+* To setup the SDL for GraphQl go to http://localhost:9002/editor/ and paste
 
-### `yarn eject`
+    ```
+    type User {
+    id: ID!
+    name: String @fake(type:fullName)
+    email: String @fake(type:email)
+    status: String @examples(values: ["Active", "Inactive"])
+    }
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+    type Query {
+    allUsers: [User!]! @listLength(min: 2, max: 1)
+    }
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    type Mutation {
+    addUser(name: String!, email: String!, status: String!): User!
+    removeUser(id: String!): User!
+    }
+    ```
+### Step to start the app
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+In the project directory terminal run the below command
+```
+yarn run start
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Assumptions and Considerations
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+* The Adding feature and the Listing feature have been displayed together. This was done since the faker api generates random data and I wanted to show the newly added data as is.
+* The graphql-faker has no ability to exactly delete the users and due to the complications of useQuery hook especially associated with re-rendering, it wasnt possible to show the removal of the Users from the list
+* The graphql-faker has no ability to perform sorting and filtering and so I have just provided the UI provisions for this.
