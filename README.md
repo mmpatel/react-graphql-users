@@ -4,7 +4,7 @@
 This simple UI is for showing a User list and adding users using graphql-faker.
 
 
-## Installing and Running the app
+## [Method 1] Installing and Running the app locally
 
 ### Steps to clone the repository
 
@@ -62,6 +62,12 @@ In the project directory terminal run the below command
 yarn run start
 ```
 
+## [Method 2] To run via docker
+
+Please Run:
+```
+docker-compose up -- build
+```
 ## Assumptions and Considerations
 
 * The Adding feature and the Listing feature have been displayed together. This was done since the faker api generates random data and I wanted to show the newly added data as is.
