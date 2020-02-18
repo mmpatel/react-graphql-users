@@ -3,9 +3,6 @@
 ## Introduction
 This simple UI is for showing a User list and adding users using graphql-faker.
 
-
-## [Method 1] Installing and Running the app locally
-
 ### Steps to clone the repository
 
 ```
@@ -13,6 +10,7 @@ git clone git@github.com:mmpatel/react-graphql-users.git
 cd react-graphql-users
 
 ```
+## [Method 1] Installing and Running the app locally
 
 ### Steps to install packages
 In the project directory's terminal run below command to install all the required packages
@@ -64,9 +62,11 @@ yarn run start
 
 ## [Method 2] To run via docker
 
-Please Run:
+Please install docker and docker-compose
+
+Then Run:
 ```
-docker-compose up -- build
+docker-compose up --build
 ```
 ## Assumptions and Considerations
 
