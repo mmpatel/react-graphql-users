@@ -1,15 +1,13 @@
-import React, { useState, Fragment, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useMutation } from 'react-apollo'
 import {
   EuiText,
   EuiSwitch,
-  EuiForm,
   EuiFlexGroup,
   EuiFlexItem,
   EuiFormRow,
   EuiButton,
-  EuiFieldText,
-  EuiSpacer
+  EuiFieldText
 } from '@elastic/eui'
 
 import { ADD_USER } from '../../../utils/schemas/user'
