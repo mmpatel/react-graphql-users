@@ -1,8 +1,7 @@
-import React, { useState, useCallback } from 'react'
+import React, { Fragment, useState } from 'react'
 
 import UserList from './container/User/List'
 import AddUser from './container/User/Add'
-import './App.css'
 
 function App() {
   const [addedUsers, setAddedUsers] = useState([])
@@ -10,10 +9,10 @@ function App() {
   const appendUsers = (newUser) => newUser && setAddedUsers([...addedUsers, newUser])
 
   return (
-    <div className="App">
+    <Fragment>
       <AddUser appendUser={appendUsers}/>
       <UserList newUsers={addedUsers}/>
-    </div>
+    </Fragment>
   )
 }
 

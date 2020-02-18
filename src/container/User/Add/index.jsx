@@ -1,22 +1,32 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, Fragment, useEffect } from 'react'
 import { useMutation } from 'react-apollo'
 import {
   EuiText,
   EuiSwitch,
-  EuiFieldText,
+  EuiForm,
+  EuiFlexGroup,
+  EuiFlexItem,
+  EuiFormRow,
   EuiButton,
+  EuiFieldText,
   EuiSpacer
 } from '@elastic/eui'
 
 import { ADD_USER } from '../../../utils/schemas/user'
+import './style.css'
 
-const AddUser = () => {
+const AddUser = ({ appendUser }) => {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [status, setStatus] = useState(true)
-  const [addUser, { error, loading }] = useMutation(ADD_USER)
+  const [addUser, { error, loading, data: { addUser: newUser } = {} }] = useMutation(ADD_USER)
 
-  const addUserDetails = () => addUser({ variables: { email, name, status: status ? 'Active': 'Inactive' } })
+  useEffect(() => appendUser(newUser), [newUser])
+
+  const addUserDetails = (e) => {
+    e.preventDefault()
+    addUser({ variables: { email, name, status: status ? 'Active' : 'Inactive' } })
+  }
 
   if (error) {
     return <div>Error</div>
@@ -26,40 +36,58 @@ const AddUser = () => {
     return <h2>Loading...</h2>
   }
 
-  return (  
-    <Fragment>
+  return (
+    <div className="Add-div">
       <EuiText grow={false}>
         <h1>Add User</h1>
       </EuiText>
-      <EuiFieldText
-        placeholder="Email"
-        id="email"
-        name="email"
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-        required
-      />
-      <EuiFieldText
-        placeholder="Name"
-        id="name"
-        name="name"
-        value={name}
-        onChange={e => setName(e.target.value)}
-        required
-      />
-      <EuiSpacer size="m" />
-      <EuiSwitch
-        label="User Active"
-        id="status"
-        name="status"
-        checked={status}
-        onChange={e => setStatus(e.target.checked)}
-      />
-      <EuiSpacer size="m" />
-      <EuiButton fill onClick={addUserDetails} color="primary">
-        Add User
-      </EuiButton>
-    </Fragment>
+      <form onSubmit={addUserDetails} className="Add-form">
+        <EuiFlexGroup style={{ maxWidth: 600 }}>
+          <EuiFlexItem>
+            <EuiFormRow label="Email">
+              <EuiFieldText
+                type="email"
+                id="email"
+                name="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+                className="Add-textfield"
+              />
+            </EuiFormRow>
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <EuiFormRow label="Name">
+              <EuiFieldText
+                id="name"
+                name="name"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                required
+                className="Add-textfield"
+              />
+            </EuiFormRow>
+          </EuiFlexItem>
+          <EuiFlexItem>
+            <EuiFormRow label="Status">
+              <EuiSwitch
+                label="User Active"
+                id="status"
+                name="status"
+                checked={status}
+                onChange={e => setStatus(e.target.checked)}
+                className="Add-switch"
+              />
+            </EuiFormRow>
+          </EuiFlexItem>
+          <EuiFlexItem grow={false}>
+            <EuiFormRow hasEmptyLabelSpace>
+              <EuiButton fill type="submit">Add User</EuiButton>
+            </EuiFormRow>
+          </EuiFlexItem>
+        </EuiFlexGroup>
+      </form>
+    </div>
   )
 }
 

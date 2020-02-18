@@ -1,27 +1,37 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useQuery, useMutation } from "react-apollo"
 import {
   EuiBasicTable,
   EuiHealth,
-  EuiSelect
+  EuiSelect,
+  EuiText
 } from '@elastic/eui'
-import { useQuery , useMutation } from "react-apollo"
 
 import { GET_USERS, DELETE_USER } from '../../../utils/schemas/user'
+import './style.css'
 
-
-const UserList = () => {
-  const [sort, setSort] = useState({ field:'name', direction: 'asc'})
-  const [filter, setFilter] = useState(['Active', 'Inacive'])
+const UserList = ({ newUsers }) => {
+  const [users, setAllUsers] = useState(null)
+  const [sort, setSort] = useState({ field: 'name', direction: 'asc' })
+  const [filter, setFilter] = useState(['Active', 'Inactive'])
   const [deleteUser] = useMutation(DELETE_USER)
-  const { loading: isLoading, error: fetchError, data } = useQuery(GET_USERS)
+  const { loading: isLoading, error: fetchError, data: fetchedUsers   = {} } = useQuery(GET_USERS)
+
+  useEffect(() => {  
+    const { allUsers } = fetchedUsers
+    let userList = []
+    if (allUsers && allUsers.length > 0) userList = allUsers
+    if (newUsers.length > 0) userList = [...userList, ...newUsers]
+    setAllUsers(userList)
+  }, [fetchedUsers, newUsers])
 
   const options = [
-    { text: 'All Users', value: ['Active', 'Inacive']},
-    { text: 'Only Active User', value: ['Active']},
-    { text: 'Only Inactive User', value: ['Inacive']}
+    { text: 'All Users', value: ['Active', 'Inactive'] },
+    { text: 'Only Active User', value: ['Active'] },
+    { text: 'Only Inactive User', value: ['Inactive'] }
   ]
 
-  const onTableChange = ({ sort: { field, direction } = {} }) => setSort({field, direction })
+  const onTableChange = ({ sort: { field, direction } = {} }) => setSort({ field, direction })
 
   const renderStatus = active => {
     const color = active ? 'green' : 'red'
@@ -74,22 +84,25 @@ const UserList = () => {
     return <h2>Loading...</h2>
   }
 
-return (
-  <Fragment>
-    <EuiSelect
-      id="statusFilter"
-      options={options}
-      value={filter}
-      onChange={({ target: { value } }) => setFilter(value)}
-    />
-    <EuiBasicTable
-      items={data.allUsers}
-      columns={columns}
-      sorting={{sort}}
-      onChange={onTableChange}
-    />
-  </Fragment>
-)
+  return (
+    <div className="User-list">
+      <EuiText grow={false}>
+        <h1>Users</h1>
+      </EuiText>
+      <EuiSelect
+        id="statusFilter"
+        options={options}
+        value={filter}
+        onChange={({ target: { value } }) => setFilter(value)}
+      />
+      <EuiBasicTable
+        items={users}
+        columns={columns}
+        sorting={{ sort }}
+        onChange={onTableChange}
+      />
+    </div>
+  )
 }
 
 export default UserList
