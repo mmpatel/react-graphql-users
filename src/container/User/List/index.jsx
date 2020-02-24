@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from "react-apollo"
 import {
-  EuiBasicTable,
+  EuiInMemoryTable,
   EuiHealth,
-  EuiSelect,
   EuiText
 } from '@elastic/eui'
 
@@ -13,7 +12,6 @@ import './style.css'
 const UserList = ({ newUsers }) => {
   const [users, setAllUsers] = useState(null)
   const [sort, setSort] = useState({ field: 'name', direction: 'asc' })
-  const [filter, setFilter] = useState(['Active', 'Inactive'])
   const [deleteUser] = useMutation(DELETE_USER)
   const { loading: isLoading, error: fetchError, data: fetchedUsers   = {} } = useQuery(GET_USERS)
 
@@ -22,22 +20,32 @@ const UserList = ({ newUsers }) => {
     let userList = []
     if (allUsers && allUsers.length > 0) userList = allUsers
     if (newUsers.length > 0) userList = [...userList, ...newUsers]
+    userList.forEach(user => user.online = user.status === 'Active' ? true : false )
     setAllUsers(userList)
   }, [fetchedUsers, newUsers])
 
-  const options = [
-    { text: 'All Users', value: ['Active', 'Inactive'] },
-    { text: 'Only Active User', value: ['Active'] },
-    { text: 'Only Inactive User', value: ['Inactive'] }
-  ]
 
-  const onTableChange = ({ sort: { field, direction } = {} }) => setSort({ field, direction })
+  const onTableChange = ({ sort: { field, direction } = {} }) => 
+  {
+    
+    setSort({ field, direction })
+  }
 
-  const renderStatus = active => {
-    const color = active ? 'green' : 'red'
-    const label = active ? 'Online' : 'Offline'
+  const renderStatus = online => {
+    const color = online ? 'green' : 'red'
+    const label = online ? 'Online' : 'Offline'
     return <EuiHealth color={color}>{label}</EuiHealth>
   }
+
+  const search = {
+    filters: 
+          [{
+            type: 'is',
+            field: 'online',
+            name: 'Online',
+            negatedName: 'Offline',
+          }]
+        }
 
   const columns = [
     {
@@ -56,7 +64,7 @@ const UserList = ({ newUsers }) => {
       truncateText: true,
     },
     {
-      field: 'status',
+      field: 'online',
       name: 'Status',
       sortable: true,
       dataType: 'boolean',
@@ -75,31 +83,21 @@ const UserList = ({ newUsers }) => {
     }
   ]
 
-
-  if (fetchError) {
-    return <div>Error</div>
-  }
-
-  if (isLoading) {
-    return <h2>Loading...</h2>
-  }
-
   return (
     <div className="User-list">
       <EuiText grow={false}>
         <h1>Users</h1>
       </EuiText>
-      <EuiSelect
-        id="statusFilter"
-        options={options}
-        value={filter}
-        onChange={({ target: { value } }) => setFilter(value)}
-      />
-      <EuiBasicTable
-        items={users}
+      <EuiInMemoryTable
+        items={users || []}
         columns={columns}
         sorting={{ sort }}
         onChange={onTableChange}
+        loading={isLoading}
+        responsive
+        noItemsMessage={users === [] ? 'No Items Found': ''}
+        search={search}
+        error={fetchError && "Failed to fetch the data"}
       />
     </div>
   )
