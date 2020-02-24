@@ -3,7 +3,8 @@ import { useQuery, useMutation } from "react-apollo"
 import {
   EuiInMemoryTable,
   EuiHealth,
-  EuiText
+  EuiText,
+  EuiLink
 } from '@elastic/eui'
 
 import { GET_USERS, DELETE_USER } from '../../../utils/schemas/user'
@@ -74,12 +75,13 @@ const UserList = ({ newUsers }) => {
       name: 'Actions',
       actions: [
         {
-          name: 'Delete',
-          description: 'Delete this user',
-          type: 'icon',
-          icon: 'cross',
-          onClick: ({ id }) => deleteUser({ variables: { id } })
-        }]
+          render: ({ id }) => {
+            return (
+              <EuiLink color="danger" onClick={() => deleteUser({ variables: { id }})}>
+                Delete
+              </EuiLink>
+            )
+          }}]
     }
   ]
 
