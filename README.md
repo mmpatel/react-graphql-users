@@ -45,7 +45,7 @@ Create a .env file in the project directory. In this file copy over the contents
     }
 
     type Query {
-    allUsers: [User!]! @listLength(min: 2, max: 1)
+    allUsers: [User!]! @listLength(min: 1, max: 3)
     }
 
     type Mutation {
