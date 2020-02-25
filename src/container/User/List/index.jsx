@@ -37,51 +37,44 @@ const UserList = ({ userList, isLoading, error, removeUser }) => {
   }
 
   const search = {
-    filters: 
-          [{
-            type: 'is',
-            field: 'online',
-            name: 'Online',
-            negatedName: 'Offline',
-          }]
-        }
-
-  const columns = [
-    {
-      field: 'name',
-      name: 'Full Name',
-      sortable: true,
-      truncateText: true,
-      header: false,
-      enlarge: true,
-      fullWidth: true,
-    },
-    {
-      field: 'email',
-      name: 'Email',
-      sortable: true,
-      truncateText: true,
-    },
-    {
+    filters: [{
+      type: 'is',
       field: 'online',
-      name: 'Status',
-      sortable: true,
-      dataType: 'boolean',
-      render: online => renderStatus(online),
-    },
-    {
-      name: 'Actions',
-      actions: [
-        {
-          render: ({ id }) => {
-            return (
-              <EuiLink color="danger" onClick={handleDelete(id)}>
-                Delete
-              </EuiLink>
-            )
-        }}]
-    }
-  ]
+      name: 'Online',
+      negatedName: 'Offline'
+    }]
+  }
+
+  const columns = [{
+    field: 'name',
+    name: 'Full Name',
+    sortable: true,
+    truncateText: true,
+  },
+  {
+    field: 'email',
+    name: 'Email',
+    sortable: true,
+    truncateText: true,
+  },
+  {
+    field: 'online',
+    name: 'Status',
+    sortable: true,
+    dataType: 'boolean',
+    render: online => renderStatus(online),
+  },
+  {
+    name: 'Actions',
+    actions: [{
+      render: ({ id }) => {
+        return (
+          <EuiLink color="danger" onClick={handleDelete(id)}>
+            Delete
+          </EuiLink>
+        )
+    }}]
+  }]
 
   return (
     <div className="User-list">

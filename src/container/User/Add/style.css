@@ -1,10 +1,8 @@
-.Add-form {
-  /* display: inline-flex;
-  width: 100%;
-  align-items: center; */
-}
-
 .Add-div {
   margin-top: 40px;
   margin-left: 50px;
+}
+
+.Flex-group {
+  max-width: 600px;
 }
