@@ -8,6 +8,7 @@ import {
 } from '@elastic/eui'
 
 import { DELETE_USER } from '../../../utils/schemas/user'
+import { filterSelect } from '../../../utils/constants'
 import './style.css'
 
 const UserList = ({ userList, isLoading, error, removeUser }) => {
@@ -38,10 +39,14 @@ const UserList = ({ userList, isLoading, error, removeUser }) => {
 
   const search = {
     filters: [{
-      type: 'is',
+      type: 'field_value_selection',
       field: 'online',
-      name: 'Online',
-      negatedName: 'Offline'
+      name: 'Status',
+      multiSelect: false,
+      options: filterSelect.map(({ value, name }) => ({
+        value,
+        name,
+      }))
     }]
   }
 
@@ -67,13 +72,11 @@ const UserList = ({ userList, isLoading, error, removeUser }) => {
   {
     name: 'Actions',
     actions: [{
-      render: ({ id }) => {
-        return (
-          <EuiLink color="danger" onClick={handleDelete(id)}>
-            Delete
-          </EuiLink>
-        )
-    }}]
+      render: ({ id }) => (
+        <EuiLink color="danger" onClick={handleDelete(id)}>
+          Delete
+        </EuiLink>
+      )}]
   }]
 
   return (

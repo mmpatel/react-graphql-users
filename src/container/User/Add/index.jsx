@@ -34,10 +34,6 @@ const AddUser = ({ appendUser }) => {
     return <div>Error</div>
   }
 
-  if (loading) {
-    return <h2>Loading...</h2>
-  }
-
   return (
     <div className="Add-div">
       <EuiText grow={false}>
@@ -84,7 +80,7 @@ const AddUser = ({ appendUser }) => {
           </EuiFlexItem>
           <EuiFlexItem grow={false}>
             <EuiFormRow hasEmptyLabelSpace>
-              <EuiButton fill type="submit">Add User</EuiButton>
+              <EuiButton fill type="submit" isLoading={loading}>Add User</EuiButton>
             </EuiFormRow>
           </EuiFlexItem>
         </EuiFlexGroup>

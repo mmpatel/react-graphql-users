@@ -17,7 +17,7 @@ const UserPage = ({
   const removeUser = useCallback(id => {
     setDeletedIds([...deletedIds, id])
     setAllUsers(users.filter(user => user.id !== id))
-  },[users])
+  }, [users])
 
   useEffect(() => {  
     let userList = []
