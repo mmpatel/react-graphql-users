@@ -50,7 +50,7 @@ Create a .env file in the project directory. In this file copy over the contents
 
     type Mutation {
     addUser(name: String!, email: String!, status: String!): User!
-    removeUser(id: String!): User!
+    removeUser(userId: String!): User!
     }
     ```
 ### Step to start the app
