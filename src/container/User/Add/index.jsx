@@ -10,6 +10,7 @@ import {
   EuiFieldText
 } from '@elastic/eui'
 
+import { getStringStatus } from '../../../utils/helperMethods'
 import { ADD_USER } from '../../../utils/schemas/user'
 import './style.css'
 
@@ -21,9 +22,12 @@ const AddUser = ({ appendUser }) => {
 
   useEffect(() => appendUser(newUser), [newUser])
 
-  const addUserDetails = (e) => {
+  const addUserDetails = e => {
     e.preventDefault()
-    addUser({ variables: { email, name, status: status ? 'Active' : 'Inactive' } })
+    addUser({ variables: { email, name, status: getStringStatus(status) } })
+    setEmail('')
+    setName('')
+    setStatus(true)
   }
 
   if (error) {
@@ -40,7 +44,7 @@ const AddUser = ({ appendUser }) => {
         <h1>Add User</h1>
       </EuiText>
       <form onSubmit={addUserDetails} className="Add-form">
-        <EuiFlexGroup style={{ maxWidth: 600 }}>
+        <EuiFlexGroup className="Flex-group">
           <EuiFlexItem>
             <EuiFormRow label="Email">
               <EuiFieldText

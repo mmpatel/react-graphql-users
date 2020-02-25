@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { useQuery, useMutation } from "react-apollo"
+import React, { useState } from 'react'
+import { useMutation } from "react-apollo"
 import {
   EuiInMemoryTable,
   EuiHealth,
@@ -7,29 +7,27 @@ import {
   EuiLink
 } from '@elastic/eui'
 
-import { GET_USERS, DELETE_USER } from '../../../utils/schemas/user'
+import { DELETE_USER } from '../../../utils/schemas/user'
 import './style.css'
 
-const UserList = ({ newUsers }) => {
-  const [users, setAllUsers] = useState(null)
+const UserList = ({ userList, isLoading, error, removeUser }) => {
   const [sort, setSort] = useState({ field: 'name', direction: 'asc' })
   const [deleteUser] = useMutation(DELETE_USER)
-  const { loading: isLoading, error: fetchError, data: fetchedUsers   = {} } = useQuery(GET_USERS)
 
-  useEffect(() => {  
-    const { allUsers } = fetchedUsers
-    let userList = []
-    if (allUsers && allUsers.length > 0) userList = allUsers
-    if (newUsers.length > 0) userList = [...userList, ...newUsers]
-    userList.forEach(user => user.online = user.status === 'Active' ? true : false )
-    setAllUsers(userList)
-  }, [fetchedUsers, newUsers])
+  const onTableChange = ({ sort: { field, direction } = {} }) => setSort({ field, direction })
 
+  /**
+   * This should be the correct way to remove user from the list but 
+   * the user ( and it's id) returned in the success event of delete
+   * is not the same as the deleted user 
+   */
+  // useEffect(() => {
+  //   if (deletedUser) removeUser(deletedUser.id)
+  // }, [deletedUser])
 
-  const onTableChange = ({ sort: { field, direction } = {} }) => 
-  {
-    
-    setSort({ field, direction })
+  const handleDelete = id => () => {
+    deleteUser({ variables: { userId: id }})
+    removeUser(id)
   }
 
   const renderStatus = online => {
@@ -77,11 +75,11 @@ const UserList = ({ newUsers }) => {
         {
           render: ({ id }) => {
             return (
-              <EuiLink color="danger" onClick={() => deleteUser({ variables: { id }})}>
+              <EuiLink color="danger" onClick={handleDelete(id)}>
                 Delete
               </EuiLink>
             )
-          }}]
+        }}]
     }
   ]
 
@@ -91,15 +89,15 @@ const UserList = ({ newUsers }) => {
         <h1>Users</h1>
       </EuiText>
       <EuiInMemoryTable
-        items={users || []}
+        items={userList || []}
         columns={columns}
         sorting={{ sort }}
         onChange={onTableChange}
         loading={isLoading}
         responsive
-        noItemsMessage={users === [] ? 'No Items Found': ''}
+        noItemsMessage={userList === [] ? 'No Items Found': ''}
         search={search}
-        error={fetchError && "Failed to fetch the data"}
+        error={error && "Failed to fetch the data"}
       />
     </div>
   )
