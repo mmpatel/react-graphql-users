@@ -9,8 +9,8 @@ export const GET_USERS = gql`
 `
 
 export const DELETE_USER = gql`
-  mutation ($id: String!) {
-    removeUser(id: $id) ${User}
+  mutation ($userId: String!) {
+    removeUser(userId: $userId) ${User}
   }
 `
 export const ADD_USER = gql`
