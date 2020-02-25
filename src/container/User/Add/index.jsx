@@ -36,7 +36,7 @@ const AddUser = ({ appendUser }) => {
 
   return (
     <div className="Add-div">
-      <EuiText grow={false}>
+      <EuiText grow={false} className="Add-header">
         <h1>Add User</h1>
       </EuiText>
       <form onSubmit={addUserDetails} className="Add-form">
@@ -48,6 +48,7 @@ const AddUser = ({ appendUser }) => {
                 id="email"
                 name="email"
                 value={email}
+                placeholder="Please enter a valid email address"
                 onChange={e => setEmail(e.target.value)}
                 required
                 className="Add-textfield"
@@ -60,13 +61,14 @@ const AddUser = ({ appendUser }) => {
                 id="name"
                 name="name"
                 value={name}
+                placeholder="Please enter your full name"
                 onChange={e => setName(e.target.value)}
                 required
                 className="Add-textfield"
               />
             </EuiFormRow>
           </EuiFlexItem>
-          <EuiFlexItem>
+          <EuiFlexItem className="Switch-btn">
             <EuiFormRow label="Status">
               <EuiSwitch
                 label="User Active"

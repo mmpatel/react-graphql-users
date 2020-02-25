@@ -1,5 +1,17 @@
 .User-list {
-  width: 95%;
-  margin: auto;
+  width: 100%;
   margin-top: 40px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+.euiTable tr {
+  line-height: 30px;
+}
+.euiPanel {
+  width: 170px;
+  left: 1155px !important;
+}
+
+.Switch-btn {
+  align-items: center;
 }

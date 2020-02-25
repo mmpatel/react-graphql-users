@@ -1,8 +1,18 @@
 .Add-div {
   margin-top: 40px;
-  margin-left: 50px;
+  width: 100%;
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
 .Flex-group {
-  max-width: 600px;
+  max-width: 100%;
+}
+
+.Add-switch {
+  margin-top: 10px;
+}
+
+.Add-header {
+  margin-bottom: 10px
 }
