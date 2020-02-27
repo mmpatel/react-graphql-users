@@ -9,7 +9,7 @@ import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
-const client = new ApolloClient({ uri: process.env.REACT_APP_APOLLO_CLIENT_URI })
+const client = new ApolloClient({ uri: process.env.REACT_APP_GRAPHQL_URL })
 
 
 ReactDOM.render(<ApolloProvider client={client}>

@@ -6,11 +6,10 @@ status: String @examples(values: ["Active", "Inactive"])
 }
 
 type Query {
-allUsers: [User!]! @listLength(min: 2, max: 1)
-getUser(id: String!): User!
+allUsers: [User!]! @listLength(min: 1, max: 3)
 }
 
 type Mutation {
 addUser(name: String!, email: String!, status: String!): User!
-removeUser(id: String!): Boolean
+removeUser(userId: String!): User!
 }

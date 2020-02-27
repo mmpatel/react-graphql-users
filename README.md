@@ -71,5 +71,3 @@ docker-compose up --build
 ## Assumptions and Considerations
 
 * The Adding feature and the Listing feature have been displayed together. This was done since the faker api generates random data and I wanted to show the newly added data as is.
-* The graphql-faker has no ability to exactly delete the users and due to the complications of useQuery hook especially associated with re-rendering, it wasnt possible to show the removal of the Users from the list
-* The graphql-faker has no ability to perform sorting and filtering and so I have just provided the UI provisions for this.
